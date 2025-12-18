@@ -43,4 +43,4 @@ Memory Marker respects your privacy.
 - All "Memories" are stored locally on your device via the `chrome.storage` API.
 
 ---
-Created with ❤️ by [Your Name/GitHub Username]
+Created with ❤️ by [Mahdi/MhdiTaheri]
