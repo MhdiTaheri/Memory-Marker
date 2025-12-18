@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    /* --- CUSTOM PROPERTIES --- */
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #e0e7ff;
+      --accent: #f43f5e;
+      --bg-main: #f8fafc;
+      --glass: rgba(255, 255, 255, 0.9);
+      --text-header: #0f172a;
+      --text-body: #334155;
+      --text-muted: #64748b;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+      --card-radius: 12px;
+    }
+
+    /* --- BASE RESET --- */
+    body {
+      width: 360px;
+      height: 520px;
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-body);
+      overflow: hidden; /* Controlled by inner scroll */
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* --- HEADER SECTION --- */
+    .app-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: 24px 20px;
+      color: white;
+      position: relative;
+    }
+
+    .app-header h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .app-header p {
+      margin: 4px 0 0 0;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .stats-pill {
+      position: absolute;
+      right: 20px;
+      top: 24px;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* --- SEARCH BAR --- */
+    .search-container {
+      padding: 16px 20px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 10px 12px 10px 35px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 13px;
+      transition: all 0.2s;
+      background: #f1f5f9;
+    }
+
+    #searchInput:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      fill: var(--text-muted);
+      width: 14px;
+      height: 14px;
+    }
+
+    /* --- CONTENT AREA --- */
+    #memoryList {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Custom Scrollbar */
+    #memoryList::-webkit-scrollbar { width: 6px; }
+    #memoryList::-webkit-scrollbar-track { background: transparent; }
+    #memoryList::-webkit-scrollbar-thumb { 
+      background: #cbd5e1; 
+      border-radius: 10px; 
+    }
+    #memoryList::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* --- MEMORY CARDS --- */
+    .memory-card {
+      background: white;
+      border-radius: var(--card-radius);
+      padding: 16px;
+      border: 1px solid transparent;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      cursor: pointer;
+      animation: slideIn 0.3s ease-out backwards;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .memory-card:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary-light);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-header);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 220px;
+    }
+
+    .card-snippet {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--text-body);
+      background: #f8fafc;
+      padding: 8px;
+      border-radius: 6px;
+      border-left: 3px solid var(--primary);
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .url-tag {
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 4px;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .delete-action {
+      padding: 6px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .delete-action:hover {
+      background: #fee2e2;
+      color: var(--accent);
+    }
+
+    /* --- EMPTY STATE --- */
+    .empty-state {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      filter: grayscale(1);
+      opacity: 0.5;
+    }
+
+    .empty-text {
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    /* --- FOOTER BRanding --- */
+    .app-footer {
+      padding: 12px;
+      text-align: center;
+      font-size: 10px;
+      color: var(--text-muted);
+      border-top: 1px solid #e2e8f0;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="stats-pill"><span id="count">0</span> saved</div>
+    <h1>🧠 Memory Marker</h1>
+    <p>Your digital second brain</p>
+  </header>
+
+  <div class="search-container">
+    <div class="search-wrapper">
+      <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input type="text" id="searchInput" placeholder="Search your memories...">
+    </div>
+  </div>
+
+  <main id="memoryList">
+    </main>
+
+  <footer class="app-footer">
+    Press <b>Right Click</b> on any text to memorize it
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
